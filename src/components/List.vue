@@ -1,19 +1,20 @@
 <template>
-  <div class="main">
-    <Form @onSubmit="handleSubmit" />
-    <List :items="items" />
+  <div class="product-list">
+    <Item
+      v-for="item in items"
+      :key="item.id"
+      :item="item"
+      @removeElement="removeElement(item.id)"
+    />
   </div>
 </template>
 
 <script>
-import Form from "@/components/Form";
-import List from "@/components/List";
+import Item from "@/components/Item";
 
 export default {
-  name: "App",
   components: {
-    Form,
-    List,
+    Item,
   },
   data() {
     return {
@@ -34,15 +35,20 @@ export default {
     };
   },
   methods: {
-    handleSubmit(item) {
-      this.items.push(item);
+    removeElement: function (id) {
+      console.log(id);
+      const itemId = this.items.findIndex((item) => item.id == id);
+      this.items = [
+        ...this.items.slice(0, itemId),
+        ...this.items.slice(itemId + 1),
+      ];
     },
   },
 };
 </script>
 <style lang="scss">
-.main {
+.product-list {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 </style>
